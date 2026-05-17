@@ -29,4 +29,5 @@ public class Mascota {
     private String raza;
     private String edad;
 
+    private Long duenoId;
 }
