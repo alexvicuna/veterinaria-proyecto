@@ -15,27 +15,27 @@ public class CitaService {
     @Autowired
     private CitaRepository citaRepository;
 
-    // 1. Crear Cita
-    public CitaDTO crearCita(CitaDTO citaDTO) {
+    // crear cita
+    public CitaDTO registrarCita(CitaDTO citaDTO) {
         Cita cita = mapToEntity(citaDTO);
         Cita nuevaCita = citaRepository.save(cita);
         return mapToDTO(nuevaCita);
     }
 
-    // 2. Obtener Todas las Citas
+    // lista citas
     public List<CitaDTO> obtenerTodas() {
         List<Cita> citas = citaRepository.findAll();
         return citas.stream().map(this::mapToDTO).collect(Collectors.toList());
     }
 
-    // 3. Obtener por ID
+    // id cita
     public CitaDTO obtenerPorId(Long id) {
         Cita cita = citaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cita no encontrada con el ID: " + id));
         return mapToDTO(cita);
     }
 
-    // 4. Actualizar Cita
+    // actualizar Cita
     public CitaDTO actualizarCita(Long id, CitaDTO citaDTO) {
         Cita cita = citaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cita no encontrada con el ID: " + id));
@@ -49,14 +49,13 @@ public class CitaService {
         return mapToDTO(citaActualizada);
     }
 
-    // 5. Eliminar Cita
+    // eliminar Cita
     public void eliminarCita(Long id) {
         Cita cita = citaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cita no encontrada con el ID: " + id));
         citaRepository.delete(cita);
     }
 
-    // --- MÉTODOS AUXILIARES DE CONVERSIÓN (Mappers) ---
 
     private CitaDTO mapToDTO(Cita cita) {
         CitaDTO dto = new CitaDTO();
