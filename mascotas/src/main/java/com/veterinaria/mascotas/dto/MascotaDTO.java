@@ -1,20 +1,19 @@
 package com.veterinaria.mascotas.dto;
 
-
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter@Setter
-@NoArgsConstructor@AllArgsConstructor
-
+@Getter
+@Setter
+@JsonPropertyOrder({ "idMascota", "nombreMasc", "raza", "edad", "especie", "idDueno", "nombreDueno" })
 public class MascotaDTO {
 
+    private Long idMascota; // <-- Tu variable real
 
     @NotBlank(message = "El nombre de la mascota no puede estar vacío")
-
     private String nombreMasc;
 
     @NotBlank(message = "La especie es obligatoria")
@@ -23,9 +22,10 @@ public class MascotaDTO {
     @NotBlank(message = "La raza es obligatoria")
     private String raza;
 
-    @NotBlank(message = "La edad es obligatoria")
-    private String edad;
+    @NotNull(message = "La edad es obligatoria")
+    private int edad;
 
+    private Long idDueno;
+    private Object nombreDueno;
 }
-
 
