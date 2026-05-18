@@ -1,11 +1,11 @@
-package service;
+package com.veterinaria.historiales_medicos.service;
 
-
-import dto.HistorialDTO;
-import model.Historial;
+import com.veterinaria.historiales_medicos.dto.HistorialDTO;
+import com.veterinaria.historiales_medicos.model.Historial;
+import com.veterinaria.historiales_medicos.repository.HistorialRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import repository.HistorialRepository;
+
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,28 +29,25 @@ public class HistorialService {
 
     public HistorialDTO obtenerPorId(Long id) {
         Historial historial = historialRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Historial no encontrado con ID: " + id));
+                .orElseThrow(() -> new RuntimeException("Historial no encontrado"));
         return mapToDTO(historial);
     }
 
     public HistorialDTO actualizarHistorial(Long id, HistorialDTO dto) {
         Historial historial = historialRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Historial no encontrado con ID: " + id));
-
+                .orElseThrow(() -> new RuntimeException("Historial no encontrado"));
         historial.setDiagnostico(dto.getDiagnostico());
         historial.setTratamiento(dto.getTratamiento());
         historial.setVacunas(dto.getVacunas());
         historial.setIdMascota(dto.getIdMascota());
-
         return mapToDTO(historialRepository.save(historial));
     }
 
     public void eliminarHistorial(Long id) {
         Historial historial = historialRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Historial no encontrado con ID: " + id));
+                .orElseThrow(() -> new RuntimeException("Historial no encontrado"));
         historialRepository.delete(historial);
     }
-
 
     private HistorialDTO mapToDTO(Historial historial) {
         HistorialDTO dto = new HistorialDTO();

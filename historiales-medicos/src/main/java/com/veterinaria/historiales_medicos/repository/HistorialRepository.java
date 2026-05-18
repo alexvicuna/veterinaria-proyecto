@@ -1,7 +1,6 @@
-package repository;
+package com.veterinaria.historiales_medicos.repository;
 
-
-import model.Historial;
+import com.veterinaria.historiales_medicos.model.Historial;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
