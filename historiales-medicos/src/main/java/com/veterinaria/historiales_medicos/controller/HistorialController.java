@@ -1,12 +1,12 @@
-package controller;
+package com.veterinaria.historiales_medicos.controller;
 
-import dto.HistorialDTO;
+import com.veterinaria.historiales_medicos.dto.HistorialDTO;
+import com.veterinaria.historiales_medicos.service.HistorialService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import service.HistorialService;
 
 import java.util.List;
 
@@ -15,12 +15,11 @@ import java.util.List;
 public class HistorialController {
 
     @Autowired
-    private HistorialService historialService;
+    private HistorialService historialService; // <-- Conecta directo con tu Service
 
     @PostMapping
     public ResponseEntity<HistorialDTO> crearHistorial(@Valid @RequestBody HistorialDTO dto) {
-        HistorialDTO nuevo = historialService.crearHistorial(dto);
-        return new ResponseEntity<>(nuevo, HttpStatus.CREATED);
+        return new ResponseEntity<>(historialService.crearHistorial(dto), HttpStatus.CREATED);
     }
 
     @GetMapping

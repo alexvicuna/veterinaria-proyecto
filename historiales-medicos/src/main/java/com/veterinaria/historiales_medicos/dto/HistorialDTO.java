@@ -1,5 +1,4 @@
-package dto;
-
+package com.veterinaria.historiales_medicos.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
