@@ -1,5 +1,6 @@
 package com.veterinaria.mascotas.client;
 
+import com.veterinaria.mascotas.dto.DuenoDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -8,5 +9,5 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface DuenoClient {
 
     @GetMapping("/{id}")
-    Object obtenerDuenoPorId(@PathVariable("id") Long id);
+    DuenoDTO obtenerDuenoPorId(@PathVariable("id") Long id);
 }

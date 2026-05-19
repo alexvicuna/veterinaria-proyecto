@@ -1,6 +1,6 @@
 package com.veterinaria.duenos.controller;
 
-import com.veterinaria.duenos.dto.DuenoDTO;
+import com.veterinaria.duenos.dto.DuenoRequestDTO;
 import com.veterinaria.duenos.service.DuenoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,26 +18,26 @@ public class DuenoController {
     private DuenoService duenoService;
 
     @PostMapping
-    public ResponseEntity<DuenoDTO> registrarDueno(@Valid @RequestBody DuenoDTO duenoDto) {
-        DuenoDTO nuevoDueno = duenoService.registrarDueno(duenoDto);
+    public ResponseEntity<DuenoRequestDTO> registrarDueno(@Valid @RequestBody DuenoRequestDTO duenoDto) {
+        DuenoRequestDTO nuevoDueno = duenoService.registrarDueno(duenoDto);
         return new ResponseEntity<>(nuevoDueno, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<DuenoDTO>> obtenerTodos() {
-        List<DuenoDTO> lista = duenoService.obtenerTodos();
+    public ResponseEntity<List<DuenoRequestDTO>> obtenerTodos() {
+        List<DuenoRequestDTO> lista = duenoService.obtenerTodos();
         return new ResponseEntity<>(lista, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DuenoDTO> obtenerPorId(@PathVariable Long id) {
-        DuenoDTO duenoDto = duenoService.obtenerPorId(id);
+    public ResponseEntity<DuenoRequestDTO> obtenerPorId(@PathVariable Long id) {
+        DuenoRequestDTO duenoDto = duenoService.obtenerPorId(id);
         return new ResponseEntity<>(duenoDto, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<DuenoDTO> actualizarDueno(@PathVariable Long id, @Valid @RequestBody DuenoDTO duenoDto) {
-        DuenoDTO actualizado = duenoService.actualizarDueno(id, duenoDto);
+    public ResponseEntity<DuenoRequestDTO> actualizarDueno(@PathVariable Long id, @Valid @RequestBody DuenoRequestDTO duenoDto) {
+        DuenoRequestDTO actualizado = duenoService.actualizarDueno(id, duenoDto);
         return new ResponseEntity<>(actualizado, HttpStatus.OK);
     }
 

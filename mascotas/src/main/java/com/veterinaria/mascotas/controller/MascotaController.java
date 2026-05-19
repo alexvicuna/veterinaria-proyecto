@@ -1,60 +1,61 @@
 package com.veterinaria.mascotas.controller;
 
-
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import com.veterinaria.mascotas.dto.MascotaDTO;
+import com.veterinaria.mascotas.dto.MascotaRequestDTO;
+import com.veterinaria.mascotas.dto.MascotaResponseDTO;
 import com.veterinaria.mascotas.service.MascotaService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/mascotas")
-
-
+@RequiredArgsConstructor
 public class MascotaController {
 
-    @Autowired
-    private MascotaService mascotaService;
-
+    private final MascotaService mascotaService;
 
     @PostMapping
-    public ResponseEntity<MascotaDTO> crearMascota(@Valid @RequestBody MascotaDTO mascotaDTO) {
-        MascotaDTO nuevaMascota = mascotaService.registrarMascota(mascotaDTO);
-        return new ResponseEntity<>(nuevaMascota, HttpStatus.CREATED);
+    public ResponseEntity<MascotaResponseDTO> crearMascota(@Valid @RequestBody MascotaRequestDTO request) {
+        return new ResponseEntity<>(mascotaService.crearMascota(request), HttpStatus.CREATED);
     }
-
 
     @GetMapping
-    public ResponseEntity<List<MascotaDTO>> obtenerTodas() {
-        return new ResponseEntity<>(mascotaService.obtenerTodas(), HttpStatus.OK);
+    public ResponseEntity<List<MascotaResponseDTO>> obtenerTodas() {
+        return ResponseEntity.ok(mascotaService.obtenerTodas());
     }
-
 
     @GetMapping("/{id}")
-    public ResponseEntity<MascotaDTO> obtenerPorId(@PathVariable Long id) {
-        return new ResponseEntity<>(mascotaService.obtenerPorId(id), HttpStatus.OK);
+    public ResponseEntity<MascotaResponseDTO> obtenerPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(mascotaService.obtenerPorId(id));
     }
-
 
     @PutMapping("/{id}")
-    public ResponseEntity<MascotaDTO> actualizarMascota(@PathVariable Long id, @Valid @RequestBody MascotaDTO mascotaDTO) {
-        MascotaDTO mascotaActualizada = mascotaService.actualizarMascota(id, mascotaDTO);
-        return new ResponseEntity<>(mascotaActualizada, HttpStatus.OK);
+    public ResponseEntity<MascotaResponseDTO> actualizar(@PathVariable Long id,
+                                                         @Valid @RequestBody MascotaRequestDTO request) {
+        return ResponseEntity.ok(mascotaService.actualizar(id, request));
     }
-
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarMascota(@PathVariable Long id) {
-        mascotaService.eliminarMascota(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204 No Content
+    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+        mascotaService.eliminar(id);
+        return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/buscar/nombre")
+    public ResponseEntity<List<MascotaResponseDTO>> buscarPorNombre(@RequestParam String nombre) {
+        return ResponseEntity.ok(mascotaService.buscarPorNombre(nombre));
+    }
+
+    @GetMapping("/buscar/raza")
+    public ResponseEntity<List<MascotaResponseDTO>> buscarPorRaza(@RequestParam String raza) {
+        return ResponseEntity.ok(mascotaService.buscarPorRaza(raza));
+    }
+
+    @GetMapping("/buscar/especie")
+    public ResponseEntity<List<MascotaResponseDTO>> buscarPorEspecie(@RequestParam String especie) {
+        return ResponseEntity.ok(mascotaService.buscarPorEspecie(especie));
+    }
 }
-
-

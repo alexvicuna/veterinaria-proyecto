@@ -26,6 +26,4 @@ public class Mascota {
     private int edad;
 
     private Long idDueno;
-
-    private Long duenoId;
 }
