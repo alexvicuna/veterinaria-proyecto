@@ -1,6 +1,8 @@
-package com.veterinaria.veterinarios.service;
+package com.veterinaria.veterinarios.service; // <-- Tu paquete oficial con 's'
 
-import com.veterinaria.veterinarios.dto.VeterinarioDTO;
+
+import com.veterinaria.veterinarios.dto.VeterinarioRequestDTO;
+import com.veterinaria.veterinarios.dto.VeterioRenponseDTO;
 import com.veterinaria.veterinarios.model.Veterinario;
 import com.veterinaria.veterinarios.repository.VeterinarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,61 +18,33 @@ public class VeterinarioService {
     private VeterinarioRepository veterinarioRepository;
 
 
-    public VeterinarioDTO crearVeterinario(VeterinarioDTO dto) {
-        Veterinario veterinario = mapToEntity(dto);
-        return mapToDTO(veterinarioRepository.save(veterinario));
+    public VeterioRenponseDTO guardarVeterinario(VeterinarioRequestDTO requestDto) {
+
+        Veterinario veterinario = new Veterinario();
+        veterinario.setNombreVet(requestDto.getNombreVet());
+        veterinario.setEspecialidad(requestDto.getEspecialidad());
+        veterinario.setTelefono(requestDto.getTelefono());
+
+        Veterinario guardado = veterinarioRepository.save(veterinario);
+
+        return mapToResponseDTO(guardado);
     }
 
 
-    public List<VeterinarioDTO> obtenerTodos() {
+    public List<VeterioRenponseDTO> obtenerTodos() {
+
         return veterinarioRepository.findAll().stream()
-                .map(this::mapToDTO)
+                .map(this::mapToResponseDTO)
                 .collect(Collectors.toList());
     }
 
 
-    public VeterinarioDTO obtenerPorId(Long id) {
-        Veterinario veterinario = veterinarioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Veterinario no encontrado con el ID: " + id));
-        return mapToDTO(veterinario);
-    }
-
-
-    public VeterinarioDTO actualizarVeterinario(Long id, VeterinarioDTO dto) {
-        Veterinario veterinario = veterinarioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Veterinario no encontrado con el ID: " + id));
-
-        veterinario.setNombreVet(dto.getNombreVet());
-        veterinario.setEspecialidad(dto.getEspecialidad());
-        veterinario.setTelefono(dto.getTelefono());
-
-        return mapToDTO(veterinarioRepository.save(veterinario));
-    }
-
-
-    public void eliminarVeterinario(Long id) {
-        Veterinario veterinario = veterinarioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Veterinario no encontrado con el ID: " + id));
-        veterinarioRepository.delete(veterinario);
-    }
-
-
-    private VeterinarioDTO mapToDTO(Veterinario veterinario) {
-        VeterinarioDTO dto = new VeterinarioDTO();
-        dto.setIdVeterinario(veterinario.getIdVeterinario());
-        dto.setNombreVet(veterinario.getNombreVet());
-        dto.setEspecialidad(veterinario.getEspecialidad());
-        dto.setTelefono(veterinario.getTelefono());
-        return dto;
-    }
-
-
-    private Veterinario mapToEntity(VeterinarioDTO dto) {
-        Veterinario veterinario = new Veterinario();
-        veterinario.setIdVeterinario(dto.getIdVeterinario());
-        veterinario.setNombreVet(dto.getNombreVet());
-        veterinario.setEspecialidad(dto.getEspecialidad());
-        veterinario.setTelefono(dto.getTelefono());
-        return veterinario;
+    private VeterioRenponseDTO mapToResponseDTO(Veterinario v) {
+        VeterioRenponseDTO responseDto = new VeterioRenponseDTO();
+        responseDto.setIdVeterinario(v.getIdVeterinario());
+        responseDto.setNombreVet(v.getNombreVet());
+        responseDto.setEspecialidad(v.getEspecialidad());
+        responseDto.setTelefono(v.getTelefono());
+        return responseDto;
     }
 }

@@ -1,6 +1,8 @@
 package com.veterinaria.veterinarios.controller;
 
-import com.veterinaria.veterinarios.dto.VeterinarioDTO;
+
+import com.veterinaria.veterinarios.dto.VeterinarioRequestDTO;
+import com.veterinaria.veterinarios.dto.VeterioRenponseDTO;
 import com.veterinaria.veterinarios.service.VeterinarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,40 +13,21 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/veterinarios")
+@RequestMapping("/api/veterinarios") // URL base para Postman
 public class VeterinarioController {
 
     @Autowired
-    private VeterinarioService veterinarioService;
+    private VeterinarioService iVeterinarioService;
 
 
     @PostMapping
-    public ResponseEntity<VeterinarioDTO> crearVeterinario(@Valid @RequestBody VeterinarioDTO dto) {
-        return new ResponseEntity<>(veterinarioService.crearVeterinario(dto), HttpStatus.CREATED);
+    public ResponseEntity<VeterioRenponseDTO> crearVeterinario(@Valid @RequestBody VeterinarioRequestDTO dto) {
+        VeterioRenponseDTO nuevo = iVeterinarioService.guardarVeterinario(dto);
+        return new ResponseEntity<>(nuevo, HttpStatus.CREATED);
     }
-
 
     @GetMapping
-    public ResponseEntity<List<VeterinarioDTO>> obtenerTodos() {
-        return ResponseEntity.ok(veterinarioService.obtenerTodos());
-    }
-
-
-    @GetMapping("/{id}")
-    public ResponseEntity<VeterinarioDTO> obtenerPorId(@PathVariable Long id) {
-        return ResponseEntity.ok(veterinarioService.obtenerPorId(id));
-    }
-
-
-    @PutMapping("/{id}")
-    public ResponseEntity<VeterinarioDTO> actualizarVeterinario(@PathVariable Long id, @Valid @RequestBody VeterinarioDTO dto) {
-        return ResponseEntity.ok(veterinarioService.actualizarVeterinario(id, dto));
-    }
-
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarVeterinario(@PathVariable Long id) {
-        veterinarioService.eliminarVeterinario(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<List<VeterioRenponseDTO>> listarVeterinarios() {
+        return ResponseEntity.ok(iVeterinarioService.obtenerTodos());
     }
 }
