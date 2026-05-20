@@ -1,5 +1,6 @@
 package com.veterinaria.mascotas.service;
 
+import com.veterinaria.mascotas.client.DuenoClient;
 import org.springframework.stereotype.Service;
 import com.veterinaria.mascotas.dto.MascotaDTO;
 import com.veterinaria.mascotas.model.Mascota;
@@ -15,18 +16,39 @@ public class MascotaService {
 
     @Autowired
     private MascotaRepository repositoryMascota;
+    @Autowired
+    private DuenoClient duenoClient;
 
-    // registrar mascota
+    // registrar mascota con Feign
     public MascotaDTO registrarMascota(MascotaDTO mascotaDto) {
-        Mascota mascota = new Mascota();
+        try {
+            Object duenoExistente = duenoClient.obtenerDuenoPorId(mascotaDto.getIdDueno());
 
-        mascota.setNombreMasc(mascotaDto.getNombreMasc());
-        mascota.setEspecie(mascotaDto.getEspecie());
-        mascota.setRaza(mascotaDto.getRaza());
-        mascota.setEdad(mascotaDto.getEdad());
+            Mascota mascota = new Mascota();
+            mascota.setNombreMasc(mascotaDto.getNombreMasc());
+            mascota.setEspecie(mascotaDto.getEspecie());
+            mascota.setRaza(mascotaDto.getRaza());
+            mascota.setEdad(mascotaDto.getEdad());
+            mascota.setIdDueno(mascotaDto.getIdDueno());
 
-        Mascota mascotaGuardada = repositoryMascota.save(mascota);
-        return mappearADto(mascotaGuardada);
+            Mascota mascotaGuardada = repositoryMascota.save(mascota);
+
+            MascotaDTO respuestaDto = new MascotaDTO();
+
+            respuestaDto.setIdMascota(mascotaGuardada.getIdMascota());
+            respuestaDto.setNombreMasc(mascotaGuardada.getNombreMasc());
+            respuestaDto.setEspecie(mascotaGuardada.getEspecie());
+            respuestaDto.setRaza(mascotaGuardada.getRaza());
+            respuestaDto.setEdad(mascotaGuardada.getEdad());
+            respuestaDto.setIdDueno(mascotaGuardada.getIdDueno());
+            respuestaDto.setNombreDueno(duenoExistente);
+
+            return respuestaDto;
+
+        } catch (Exception e) {
+            throw new RuntimeException("No se puede registrar la mascota: El Dueño con el ID " +
+                    mascotaDto.getIdDueno() + " no existe.");
+        }
     }
 
     // lista de mascotas
@@ -66,15 +88,25 @@ public class MascotaService {
 
 
     // de entidad a DTO
-    private MascotaDTO mappearADto(Mascota entidad) {
+    private MascotaDTO mappearADto(Mascota mascota) {
         MascotaDTO dto = new MascotaDTO();
-        dto.setNombreMasc(entidad.getNombreMasc());
-        dto.setEspecie(entidad.getEspecie());
-        dto.setRaza(entidad.getRaza());
-        dto.setEdad(entidad.getEdad());
+
+        dto.setIdMascota(mascota.getIdMascota());
+        dto.setNombreMasc(mascota.getNombreMasc());
+        dto.setEspecie(mascota.getEspecie());
+        dto.setRaza(mascota.getRaza());
+        dto.setEdad(mascota.getEdad());
+        dto.setIdDueno(mascota.getIdDueno());
+
+        try {
+            Object dueno = duenoClient.obtenerDuenoPorId(mascota.getIdDueno());
+            dto.setNombreDueno(dueno);
+        } catch (Exception e) {
+            dto.setNombreDueno("Dueño no encontrado");
+        }
+
         return dto;
     }
-
 }
 
 
