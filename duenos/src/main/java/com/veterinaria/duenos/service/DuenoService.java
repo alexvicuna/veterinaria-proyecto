@@ -1,6 +1,7 @@
 package com.veterinaria.duenos.service;
 
 import com.veterinaria.duenos.dto.DuenoRequestDTO;
+import com.veterinaria.duenos.dto.DuenoResponseDTO;
 import com.veterinaria.duenos.model.Dueno;
 import com.veterinaria.duenos.repository.DuenoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,33 +15,32 @@ public class DuenoService {
     @Autowired
     private DuenoRepository duenoRepository;
 
-    public DuenoRequestDTO registrarDueno(DuenoRequestDTO duenoDto) {
+    public DuenoResponseDTO registrarDueno(DuenoRequestDTO duenoDto) {
         Dueno dueno = new Dueno();
-
         dueno.setNombre(duenoDto.getNombre());
         dueno.setApellido(duenoDto.getApellido());
         dueno.setTelefono(duenoDto.getTelefono());
         dueno.setCorreo(duenoDto.getCorreo());
 
-        Dueno duenoGuardado = duenoRepository.save(dueno);
-        return mappearADto(duenoGuardado);
+        return mappearADto(duenoRepository.save(dueno));
     }
 
     // lista
-    public List<DuenoRequestDTO> obtenerTodos() {
+    public List<DuenoResponseDTO> obtenerTodos() {
         return duenoRepository.findAll().stream()
                 .map(this::mappearADto)
                 .collect(Collectors.toList());
     }
 
     // buscar x id
-    public DuenoRequestDTO obtenerPorId(Long id) {
+    public DuenoResponseDTO obtenerPorId(Long id) {
         Dueno encontrado = duenoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Dueño no encontrado con el ID: " + id));
         return mappearADto(encontrado);
     }
 
-    public DuenoRequestDTO actualizarDueno(Long id, DuenoRequestDTO duenoDto) {
+
+    public DuenoResponseDTO actualizarDueno(Long id, DuenoRequestDTO duenoDto) {
         Dueno existente = duenoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Dueño no encontrado con el ID: " + id));
 
@@ -49,8 +49,7 @@ public class DuenoService {
         existente.setTelefono(duenoDto.getTelefono());
         existente.setCorreo(duenoDto.getCorreo());
 
-        Dueno actualizado = duenoRepository.save(existente);
-        return mappearADto(actualizado);
+        return mappearADto(duenoRepository.save(existente));
     }
 
     // eliminar
@@ -60,9 +59,11 @@ public class DuenoService {
         duenoRepository.delete(existente);
     }
 
+
     // de entidad a DTO
-    private DuenoRequestDTO mappearADto(Dueno entidad) {
-        DuenoRequestDTO dto = new DuenoRequestDTO();
+    private DuenoResponseDTO mappearADto(Dueno entidad) {
+        DuenoResponseDTO dto = new DuenoResponseDTO();
+        dto.setIdDueno(entidad.getIdDueno()); // ← ahora sí incluye el ID
         dto.setNombre(entidad.getNombre());
         dto.setApellido(entidad.getApellido());
         dto.setTelefono(entidad.getTelefono());
