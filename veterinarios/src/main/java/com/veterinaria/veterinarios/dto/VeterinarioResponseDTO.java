@@ -1,16 +1,18 @@
 package com.veterinaria.veterinarios.dto;
 
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Setter
-@JsonPropertyOrder({"idVeterinario", "nombreVet", "especialidad", "telefono"})
-public class VeterinarioResponseDTO{
-
+@NoArgsConstructor
+public class VeterinarioResponseDTO {
     private Long idVeterinario;
+    private String rutVet;
     private String nombreVet;
+    private String apellidoVet;
     private String especialidad;
     private String telefono;
+    private String correo;
 }
