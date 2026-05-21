@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class VeterinarioModel { // <-- ¡Asegúrate de poner la palabra 'class' aquí!
+public class Veterinario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

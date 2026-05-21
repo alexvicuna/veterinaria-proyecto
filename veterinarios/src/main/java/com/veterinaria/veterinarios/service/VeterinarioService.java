@@ -1,7 +1,8 @@
 package com.veterinaria.veterinarios.service;
 
-import com.veterinaria.veterinarios.dto.VeterinarioDTO;
-import com.veterinaria.veterinarios.model.VeterinarioModel;
+import com.veterinaria.veterinarios.dto.VeterinarioRequestDTO; // <-- Importación agregada
+import com.veterinaria.veterinarios.dto.VeterinarioResponseDTO;
+import com.veterinaria.veterinarios.model.Veterinario;
 import com.veterinaria.veterinarios.repository.VeterinarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,28 +17,28 @@ public class VeterinarioService {
     private VeterinarioRepository veterinarioRepository;
 
 
-    public VeterinarioDTO crearVeterinario(VeterinarioDTO dto) {
-        VeterinarioModel veterinario = mapToEntity(dto);
+    public VeterinarioResponseDTO crearVeterinario(VeterinarioRequestDTO dto) {
+        Veterinario veterinario = mapToEntity(dto);
         return mapToDTO(veterinarioRepository.save(veterinario));
     }
 
 
-    public List<VeterinarioDTO> obtenerTodos() {
+    public List<VeterinarioResponseDTO> obtenerTodos() {
         return veterinarioRepository.findAll().stream()
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
     }
 
 
-    public VeterinarioDTO obtenerPorId(Long id) {
-        VeterinarioModel veterinario = veterinarioRepository.findById(id)
+    public VeterinarioResponseDTO obtenerPorId(Long id) {
+        Veterinario veterinario = veterinarioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Veterinario no encontrado con el ID: " + id));
         return mapToDTO(veterinario);
     }
 
 
-    public VeterinarioDTO actualizarVeterinario(Long id, VeterinarioDTO dto) {
-        VeterinarioModel veterinario = veterinarioRepository.findById(id)
+    public VeterinarioResponseDTO actualizarVeterinario(Long id, VeterinarioRequestDTO dto) {
+        Veterinario veterinario = veterinarioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Veterinario no encontrado con el ID: " + id));
 
         veterinario.setNombreVet(dto.getNombreVet());
@@ -47,16 +48,15 @@ public class VeterinarioService {
         return mapToDTO(veterinarioRepository.save(veterinario));
     }
 
-
     public void eliminarVeterinario(Long id) {
-        VeterinarioModel veterinario = veterinarioRepository.findById(id)
+        Veterinario veterinario = veterinarioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Veterinario no encontrado con el ID: " + id));
         veterinarioRepository.delete(veterinario);
     }
 
 
-    private VeterinarioDTO mapToDTO(VeterinarioModel veterinario) {
-        VeterinarioDTO dto = new VeterinarioDTO();
+    private VeterinarioResponseDTO mapToDTO(Veterinario veterinario) {
+        VeterinarioResponseDTO dto = new VeterinarioResponseDTO();
         dto.setIdVeterinario(veterinario.getIdVeterinario());
         dto.setNombreVet(veterinario.getNombreVet());
         dto.setEspecialidad(veterinario.getEspecialidad());
@@ -65,9 +65,8 @@ public class VeterinarioService {
     }
 
 
-    private VeterinarioModel mapToEntity(VeterinarioDTO dto) {
-        VeterinarioModel veterinario = new VeterinarioModel();
-        veterinario.setIdVeterinario(dto.getIdVeterinario());
+    private Veterinario mapToEntity(VeterinarioRequestDTO dto) {
+        Veterinario veterinario = new Veterinario();
         veterinario.setNombreVet(dto.getNombreVet());
         veterinario.setEspecialidad(dto.getEspecialidad());
         veterinario.setTelefono(dto.getTelefono());
