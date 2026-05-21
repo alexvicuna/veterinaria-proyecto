@@ -10,6 +10,13 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(DuenoNotFoundException.class)
+    public ResponseEntity<Map<String, String>> manejarDuenoNotFound(DuenoNotFoundException ex) {
+        Map<String, String> respuesta = new HashMap<>();
+        respuesta.put("error", ex.getMessage());
+        return new ResponseEntity<>(respuesta, HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<Map<String, String>> manejarRuntimeException(RuntimeException ex) {
         Map<String, String> respuesta = new HashMap<>();
