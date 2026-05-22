@@ -1,13 +1,12 @@
 package com.veterinaria.citas.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -21,10 +20,14 @@ public class Cita {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idCita;
 
-    private Date fecha;
-    private String motivos;
+    private LocalDateTime fechaCita;
+    private String motivoConsulta;
+
+    @Enumerated(EnumType.STRING)
+    private EstadoCita estadoCita;
 
     private Long idMascota;
     private Long idDueno;
+    private Long idVeterinario;
 }
 

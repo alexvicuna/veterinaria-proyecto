@@ -1,79 +1,116 @@
 package com.veterinaria.citas.service;
 
-import com.veterinaria.citas.dto.CitaDTO;
+import com.veterinaria.citas.client.DuenoClient;
+import com.veterinaria.citas.client.MascotaClient;
+import com.veterinaria.citas.client.VeterinarioClient;
+import com.veterinaria.citas.dto.*;
 import com.veterinaria.citas.model.Cita;
+import com.veterinaria.citas.model.EstadoCita;
 import com.veterinaria.citas.repository.CitaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-
 public class CitaService {
+
     @Autowired
     private CitaRepository citaRepository;
 
-    // crear cita
-    public CitaDTO registrarCita(CitaDTO citaDTO) {
-        Cita cita = mapToEntity(citaDTO);
+    @Autowired
+    private MascotaClient mascotaClient;
+
+    @Autowired
+    private DuenoClient duenoClient;
+
+    @Autowired
+    private VeterinarioClient veterinarioClient;
+
+
+    public CitaResponseDTO registrarCita(CitaRequestDTO citaRequestDTO) {
+        Cita cita = mapToEntity(citaRequestDTO);
+        cita.setEstadoCita(EstadoCita.PENDIENTE);  // ← siempre PENDIENTE al crear
         Cita nuevaCita = citaRepository.save(cita);
-        return mapToDTO(nuevaCita);
+        return mapToResponseDTO(nuevaCita);
     }
 
-    // lista citas
-    public List<CitaDTO> obtenerTodas() {
+
+    public List<CitaResponseDTO> obtenerTodas() {
         List<Cita> citas = citaRepository.findAll();
-        return citas.stream().map(this::mapToDTO).collect(Collectors.toList());
+        return citas.stream().map(this::mapToResponseDTO).collect(Collectors.toList());
     }
 
-    // id cita
-    public CitaDTO obtenerPorId(Long id) {
+
+    public CitaResponseDTO obtenerPorId(Long id) {
         Cita cita = citaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cita no encontrada con el ID: " + id));
-        return mapToDTO(cita);
+        return mapToResponseDTO(cita);
     }
 
-    // actualizar Cita
-    public CitaDTO actualizarCita(Long id, CitaDTO citaDTO) {
+
+    public CitaResponseDTO actualizarCita(Long id, CitaRequestDTO citaRequestDTO) {
         Cita cita = citaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cita no encontrada con el ID: " + id));
 
-        cita.setFecha(citaDTO.getFecha());
-        cita.setMotivos(citaDTO.getMotivos());
-        cita.setIdMascota(citaDTO.getIdMascota());
-        cita.setIdDueno(citaDTO.getIdDueno());
+        cita.setFechaCita(citaRequestDTO.getFechaCita());
+        cita.setMotivoConsulta(citaRequestDTO.getMotivoConsulta());
+        cita.setIdMascota(citaRequestDTO.getIdMascota());
+        cita.setIdDueno(citaRequestDTO.getIdDueno());
+        cita.setIdVeterinario(citaRequestDTO.getIdVeterinario());
 
         Cita citaActualizada = citaRepository.save(cita);
-        return mapToDTO(citaActualizada);
+        return mapToResponseDTO(citaActualizada);
     }
 
-    // eliminar Cita
+
+    public CitaResponseDTO actualizarEstado(Long id, ActualizarEstadoDTO dto) {
+        Cita cita = citaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cita no encontrada con el ID: " + id));
+        cita.setEstadoCita(dto.getEstadoCita());
+        Cita citaActualizada = citaRepository.save(cita);
+        return mapToResponseDTO(citaActualizada);
+    }
+
+
     public void eliminarCita(Long id) {
         Cita cita = citaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cita no encontrada con el ID: " + id));
         citaRepository.delete(cita);
     }
 
+    public List<CitaResponseDTO> obtenerPorMascota(Long idMascota) {
+        List<Cita> citas = citaRepository.findByIdMascota(idMascota);
+        return citas.stream().map(this::mapToResponseDTO).collect(Collectors.toList());
+    }
 
-    private CitaDTO mapToDTO(Cita cita) {
-        CitaDTO dto = new CitaDTO();
+    public List<CitaResponseDTO> obtenerPorFecha(LocalDate fecha) {
+        List<Cita> citas = citaRepository.findByFecha(fecha);
+        return citas.stream().map(this::mapToResponseDTO).collect(Collectors.toList());
+    }
+
+    private CitaResponseDTO mapToResponseDTO(Cita cita) {
+        CitaResponseDTO dto = new CitaResponseDTO();
         dto.setIdCita(cita.getIdCita());
-        dto.setFecha(cita.getFecha());
-        dto.setMotivos(cita.getMotivos());
-        dto.setIdMascota(cita.getIdMascota());
-        dto.setIdDueno(cita.getIdDueno());
+        dto.setFechaCita(cita.getFechaCita());
+        dto.setMotivoConsulta(cita.getMotivoConsulta());
+        dto.setEstadoCita(cita.getEstadoCita());
+        dto.setMascota(mascotaClient.obtenerMascota(cita.getIdMascota()));
+        dto.setDueno(duenoClient.obtenerDueno(cita.getIdDueno()));
+        dto.setVeterinario(veterinarioClient.obtenerVeterinario(cita.getIdVeterinario()));
         return dto;
     }
 
-    private Cita mapToEntity(CitaDTO dto) {
+    private Cita mapToEntity(CitaRequestDTO dto) {
         Cita cita = new Cita();
-        cita.setIdCita(dto.getIdCita());
-        cita.setFecha(dto.getFecha());
-        cita.setMotivos(dto.getMotivos());
+        cita.setFechaCita(dto.getFechaCita());
+        cita.setMotivoConsulta(dto.getMotivoConsulta());
         cita.setIdMascota(dto.getIdMascota());
         cita.setIdDueno(dto.getIdDueno());
+        cita.setIdVeterinario(dto.getIdVeterinario());
         return cita;
     }
 }
