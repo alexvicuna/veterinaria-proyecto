@@ -1,4 +1,5 @@
 package com.veterinaria.citas.dto;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -33,5 +34,5 @@ public class CitaRequestDTO {
     private Long idDueno;
 
     @NotNull(message = "El ID del veterinario es obligatorio")
-    private Long idVeterinario; 
+    private Long idVeterinario;
 }
