@@ -1,5 +1,6 @@
 package com.veterinaria.citas.dto;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.veterinaria.citas.model.EstadoCita;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -15,7 +16,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-
+@JsonPropertyOrder({"fechaCita", "motivoConsulta", "estadoCita", "idMascota", "idDueno", "idVeterinario"})
 public class CitaRequestDTO {
 
     private Long idCita;
@@ -26,6 +27,9 @@ public class CitaRequestDTO {
 
     @NotBlank(message = "El motivo de la cita no puede estar vacío")
     private String motivoConsulta;
+
+    @NotNull(message = "El estado de la cita es obligatorio")
+    private EstadoCita estadoCita;
 
     @NotNull(message = "El ID de la mascota es obligatorio")
     private Long idMascota;
