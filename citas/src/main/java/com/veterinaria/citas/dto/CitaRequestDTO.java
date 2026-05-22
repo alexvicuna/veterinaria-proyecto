@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -13,16 +15,16 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class CitaDTO {
+public class CitaRequestDTO {
 
     private Long idCita;
 
     @NotNull(message = "La fecha de la cita no puede ser nula")
     @Future(message = "La fecha de la cita debe ser en el futuro")
-    private Date fecha;
+    private LocalDateTime fechaCita;  // ← Date → LocalDateTime
 
     @NotBlank(message = "El motivo de la cita no puede estar vacío")
-    private String motivos;
+    private String motivoConsulta;
 
     @NotNull(message = "El ID de la mascota es obligatorio")
     private Long idMascota;
@@ -30,4 +32,6 @@ public class CitaDTO {
     @NotNull(message = "El ID del dueño es obligatorio")
     private Long idDueno;
 
+    @NotNull(message = "El ID del veterinario es obligatorio")
+    private Long idVeterinario; 
 }
