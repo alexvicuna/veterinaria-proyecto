@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-package com.veterinaria.inventario.dto;
-
-public class InventarioRequestDTO {
-}
-=======
-// InventarioRequestDTO.java
 package com.veterinaria.inventario.dto;
 
 import jakarta.validation.constraints.Min;
@@ -33,4 +26,3 @@ public class InventarioRequestDTO {
     @Min(value = 0, message = "La cantidad no puede ser negativa")
     private Integer cantidadDisponible;
 }
->>>>>>> 0429cfed3641891bf219397071c83ecf49cf9344

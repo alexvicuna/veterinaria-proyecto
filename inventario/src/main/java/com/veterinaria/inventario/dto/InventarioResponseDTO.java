@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-package com.veterinaria.inventario.dto;
-
-public class InventarioResponseDTO {
-}
-=======
-// InventarioResponseDTO.java
 package com.veterinaria.inventario.dto;
 
 import lombok.Getter;
@@ -24,4 +17,4 @@ public class InventarioResponseDTO {
     private String categoriaProducto;
     private Integer cantidadDisponible;
 }
->>>>>>> 0429cfed3641891bf219397071c83ecf49cf9344
+
