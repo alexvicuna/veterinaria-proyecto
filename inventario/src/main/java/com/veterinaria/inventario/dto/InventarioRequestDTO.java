@@ -1,4 +1,3 @@
-// InventarioRequestDTO.java
 package com.veterinaria.inventario.dto;
 
 import jakarta.validation.constraints.Min;

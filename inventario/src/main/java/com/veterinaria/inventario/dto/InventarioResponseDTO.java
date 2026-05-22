@@ -1,4 +1,3 @@
-// InventarioResponseDTO.java
 package com.veterinaria.inventario.dto;
 
 import lombok.Getter;
