@@ -1,7 +1,10 @@
 package com.veterinaria.duenos.service;
 
+import com.veterinaria.duenos.client.MascotaClient;
 import com.veterinaria.duenos.dto.DuenoRequestDTO;
 import com.veterinaria.duenos.dto.DuenoResponseDTO;
+import com.veterinaria.duenos.dto.MascotaDTO;
+import com.veterinaria.duenos.duenoException.DuenoNotFoundException;
 import com.veterinaria.duenos.model.Dueno;
 import com.veterinaria.duenos.repository.DuenoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +17,12 @@ import java.util.stream.Collectors;
 public class DuenoService {
     @Autowired
     private DuenoRepository duenoRepository;
+    @Autowired
+    private MascotaClient mascotaClient;
 
     public DuenoResponseDTO registrarDueno(DuenoRequestDTO duenoDto) {
         Dueno dueno = new Dueno();
+        dueno.setRut(duenoDto.getRut());
         dueno.setNombre(duenoDto.getNombre());
         dueno.setApellido(duenoDto.getApellido());
         dueno.setTelefono(duenoDto.getTelefono());
@@ -39,11 +45,17 @@ public class DuenoService {
         return mappearADto(encontrado);
     }
 
+    // buscar x rut
+    public DuenoResponseDTO obtenerPorRut(String rut) {
+        Dueno encontrado = duenoRepository.findByRut(rut)
+                .orElseThrow(() -> new DuenoNotFoundException(rut));
+        return mappearADto(encontrado);
+    }
 
     public DuenoResponseDTO actualizarDueno(Long id, DuenoRequestDTO duenoDto) {
         Dueno existente = duenoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Dueño no encontrado con el ID: " + id));
-
+        existente.setRut(duenoDto.getRut());
         existente.setNombre(duenoDto.getNombre());
         existente.setApellido(duenoDto.getApellido());
         existente.setTelefono(duenoDto.getTelefono());
@@ -63,11 +75,16 @@ public class DuenoService {
     // de entidad a DTO
     private DuenoResponseDTO mappearADto(Dueno entidad) {
         DuenoResponseDTO dto = new DuenoResponseDTO();
-        dto.setIdDueno(entidad.getIdDueno()); // ← ahora sí incluye el ID
+        dto.setIdDueno(entidad.getIdDueno());
+        dto.setRut(entidad.getRut());
         dto.setNombre(entidad.getNombre());
         dto.setApellido(entidad.getApellido());
         dto.setTelefono(entidad.getTelefono());
         dto.setCorreo(entidad.getCorreo());
+
+        List<MascotaDTO> mascotas = mascotaClient.obtenerMascotasPorDueno(entidad.getIdDueno());
+        dto.setMascotas(mascotas);
+
         return dto;
     }
 }

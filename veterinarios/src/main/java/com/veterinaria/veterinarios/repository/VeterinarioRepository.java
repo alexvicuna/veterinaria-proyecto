@@ -9,6 +9,10 @@ import java.util.Optional;
 
 @Repository
 public interface VeterinarioRepository extends JpaRepository<Veterinario, Long> {
+<<<<<<< HEAD
+
+=======
     Optional<Veterinario> findByRutVet(String rutVet);
     List<Veterinario> findByEspecialidadContainingIgnoreCase(String especialidad);
+>>>>>>> 0429cfed3641891bf219397071c83ecf49cf9344
 }

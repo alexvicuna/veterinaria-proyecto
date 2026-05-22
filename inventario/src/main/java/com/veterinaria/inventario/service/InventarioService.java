@@ -1,5 +1,9 @@
 package com.veterinaria.inventario.service;
 
+<<<<<<< HEAD
+public class InventarioService {
+}
+=======
 import com.veterinaria.inventario.dto.InventarioRequestDTO;
 import com.veterinaria.inventario.dto.InventarioResponseDTO;
 import com.veterinaria.inventario.inventarioException.InventarioNotFoundException;
@@ -91,3 +95,4 @@ public class InventarioService {
         return dto;
     }
 }
+>>>>>>> 0429cfed3641891bf219397071c83ecf49cf9344

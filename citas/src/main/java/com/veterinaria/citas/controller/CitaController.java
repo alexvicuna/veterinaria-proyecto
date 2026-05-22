@@ -1,6 +1,7 @@
 package com.veterinaria.citas.controller;
 
-import com.veterinaria.citas.dto.CitaDTO;
+import com.veterinaria.citas.dto.CitaRequestDTO;
+import com.veterinaria.citas.dto.CitaResponseDTO;
 import com.veterinaria.citas.service.CitaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -18,28 +20,39 @@ public class CitaController {
     private CitaService citaService;
 
     @PostMapping
-    public ResponseEntity<CitaDTO> crearCita(@Valid @RequestBody CitaDTO citaDTO) {
-        CitaDTO nuevaCita = citaService.registrarCita(citaDTO);
-        return new ResponseEntity<>(nuevaCita, HttpStatus.CREATED);
+    public ResponseEntity<CitaResponseDTO> registrarCita(@Valid @RequestBody CitaRequestDTO citaRequestDTO) {
+        CitaResponseDTO nuevaCita = citaService.registrarCita(citaRequestDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevaCita);
     }
 
+
     @GetMapping
-    public ResponseEntity<List<CitaDTO>> obtenerTodas() {
-        List<CitaDTO> citas = citaService.obtenerTodas();
-        return ResponseEntity.ok(citas);
+    public ResponseEntity<List<CitaResponseDTO>> obtenerTodas() {
+        return ResponseEntity.ok(citaService.obtenerTodas());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CitaDTO> obtenerPorId(@PathVariable Long id) {
-        CitaDTO citaDTO = citaService.obtenerPorId(id);
-        return ResponseEntity.ok(citaDTO);
+    public ResponseEntity<CitaResponseDTO> obtenerPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(citaService.obtenerPorId(id));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<CitaDTO> actualizarCita(@PathVariable Long id, @Valid @RequestBody CitaDTO citaDTO) {
-        CitaDTO citaActualizada = citaService.actualizarCita(id, citaDTO);
-        return ResponseEntity.ok(citaActualizada);
+    @GetMapping("/mascota/{idMascota}")
+    public ResponseEntity<List<CitaResponseDTO>> obtenerPorMascota(@PathVariable Long idMascota) {
+        return ResponseEntity.ok(citaService.obtenerPorMascota(idMascota));
     }
+
+    @GetMapping("/fecha/{fecha}")
+    public ResponseEntity<List<CitaResponseDTO>> obtenerPorFecha(@PathVariable LocalDate fecha) {
+        return ResponseEntity.ok(citaService.obtenerPorFecha(fecha));
+    }
+
+
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CitaResponseDTO> actualizarCita(@PathVariable Long id, @Valid @RequestBody CitaRequestDTO citaRequestDTO) {
+        return ResponseEntity.ok(citaService.actualizarCita(id, citaRequestDTO));
+    }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarCita(@PathVariable Long id) {

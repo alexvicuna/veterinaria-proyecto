@@ -18,7 +18,7 @@ public class Dueno {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idDueno;
-
+    private String rut;
     private String nombre;
     private String apellido;
     private String telefono;

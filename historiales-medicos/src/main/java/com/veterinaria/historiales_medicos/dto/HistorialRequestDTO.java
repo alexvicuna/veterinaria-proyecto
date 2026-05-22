@@ -18,9 +18,10 @@ public class HistorialRequestDTO {
     @NotBlank(message = "El tratamiento es obligatorio")
     private String tratamiento;
 
-    private String vacunas;
+    private String vacunas;        // opcional, no siempre hay vacunas
 
-    private String observaciones;
+    private String observaciones;  // opcional, notas extra del veterinario
+
     @NotNull(message = "La fecha de atención es obligatoria")
     private LocalDate fechaAtencion;
 

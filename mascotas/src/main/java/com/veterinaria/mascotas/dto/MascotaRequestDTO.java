@@ -12,8 +12,6 @@ import lombok.Setter;
 @Setter
 @JsonPropertyOrder({"nombreMasc", "raza", "edad", "especie", "idDueno", "nombreDueno" })
 public class MascotaRequestDTO {
-    //Este request DTO viaja desde el cliente al servidor
-    // No tiene lógica de negocio
 
     Long idMascota;
 

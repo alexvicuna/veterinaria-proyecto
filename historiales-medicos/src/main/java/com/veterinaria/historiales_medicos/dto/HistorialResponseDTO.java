@@ -1,14 +1,16 @@
 package com.veterinaria.historiales_medicos.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
-@Getter
-@Setter@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Getter@Setter@AllArgsConstructor
+@NoArgsConstructor
 
 public class HistorialResponseDTO {
+
         private Long idHistorial;
         private String diagnostico;
         private String tratamiento;
@@ -17,5 +19,6 @@ public class HistorialResponseDTO {
         private String observaciones;
         private Long idMascota;
         private Long idVeterinario;
+
 
 }

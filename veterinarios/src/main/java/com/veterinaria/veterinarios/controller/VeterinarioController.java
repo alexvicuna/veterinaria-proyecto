@@ -1,7 +1,13 @@
 package com.veterinaria.veterinarios.controller;
 
+<<<<<<< HEAD
+
+import com.veterinaria.veterinarios.dto.VeterinarioRequestDTO;
+import com.veterinaria.veterinarios.dto.VeterioRenponseDTO;
+=======
 import com.veterinaria.veterinarios.dto.VeterinarioRequestDTO;
 import com.veterinaria.veterinarios.dto.VeterinarioResponseDTO;
+>>>>>>> 0429cfed3641891bf219397071c83ecf49cf9344
 import com.veterinaria.veterinarios.service.VeterinarioService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +17,24 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+<<<<<<< HEAD
+@RequestMapping("/api/veterinarios") // URL base para Postman
+public class VeterinarioController {
+
+    @Autowired
+    private VeterinarioService iVeterinarioService;
+
+
+    @PostMapping
+    public ResponseEntity<VeterioRenponseDTO> crearVeterinario(@Valid @RequestBody VeterinarioRequestDTO dto) {
+        VeterioRenponseDTO nuevo = iVeterinarioService.guardarVeterinario(dto);
+        return new ResponseEntity<>(nuevo, HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<VeterioRenponseDTO>> listarVeterinarios() {
+        return ResponseEntity.ok(iVeterinarioService.obtenerTodos());
+=======
 @RequestMapping("/api/v1/veterinarios")
 @RequiredArgsConstructor
 public class VeterinarioController {
@@ -52,5 +76,6 @@ public class VeterinarioController {
     public ResponseEntity<Void> eliminarVeterinario(@PathVariable Long id) {
         veterinarioService.eliminarVeterinario(id);
         return ResponseEntity.noContent().build();
+>>>>>>> 0429cfed3641891bf219397071c83ecf49cf9344
     }
 }

@@ -17,3 +17,4 @@ public class InventarioResponseDTO {
     private String categoriaProducto;
     private Integer cantidadDisponible;
 }
+

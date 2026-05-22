@@ -36,6 +36,11 @@ public class DuenoController {
         return new ResponseEntity<>(duenoDto, HttpStatus.OK);
     }
 
+    @GetMapping("/rut/{rut}")
+    public ResponseEntity<DuenoResponseDTO> obtenerPorRut(@PathVariable String rut) {
+        return ResponseEntity.ok(duenoService.obtenerPorRut(rut));
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<DuenoResponseDTO> actualizarDueno(@PathVariable Long id, @Valid @RequestBody DuenoRequestDTO duenoDto) {
         DuenoResponseDTO actualizado = duenoService.actualizarDueno(id, duenoDto);
