@@ -1,7 +1,13 @@
-package com.veterinaria.veterinarios.service;
+package com.veterinaria.veterinarios.service; // <-- Tu paquete oficial con 's'
+
+<<<<<<< HEAD
 
 import com.veterinaria.veterinarios.dto.VeterinarioRequestDTO;
+import com.veterinaria.veterinarios.dto.VeterioRenponseDTO;
+=======
+import com.veterinaria.veterinarios.dto.VeterinarioRequestDTO;
 import com.veterinaria.veterinarios.dto.VeterinarioResponseDTO;
+>>>>>>> 0429cfed3641891bf219397071c83ecf49cf9344
 import com.veterinaria.veterinarios.model.Veterinario;
 import com.veterinaria.veterinarios.repository.VeterinarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +21,37 @@ public class VeterinarioService {
     @Autowired
     private VeterinarioRepository veterinarioRepository;
 
+<<<<<<< HEAD
+
+    public VeterioRenponseDTO guardarVeterinario(VeterinarioRequestDTO requestDto) {
+
+        Veterinario veterinario = new Veterinario();
+        veterinario.setNombreVet(requestDto.getNombreVet());
+        veterinario.setEspecialidad(requestDto.getEspecialidad());
+        veterinario.setTelefono(requestDto.getTelefono());
+
+        Veterinario guardado = veterinarioRepository.save(veterinario);
+
+        return mapToResponseDTO(guardado);
+    }
+
+
+    public List<VeterioRenponseDTO> obtenerTodos() {
+
+        return veterinarioRepository.findAll().stream()
+                .map(this::mapToResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+
+    private VeterioRenponseDTO mapToResponseDTO(Veterinario v) {
+        VeterioRenponseDTO responseDto = new VeterioRenponseDTO();
+        responseDto.setIdVeterinario(v.getIdVeterinario());
+        responseDto.setNombreVet(v.getNombreVet());
+        responseDto.setEspecialidad(v.getEspecialidad());
+        responseDto.setTelefono(v.getTelefono());
+        return responseDto;
+=======
     public VeterinarioResponseDTO registrarVeterinario(VeterinarioRequestDTO dto) {
         Veterinario veterinario = new Veterinario();
         veterinario.setRutVet(dto.getRutVet());
@@ -81,5 +118,6 @@ public class VeterinarioService {
         dto.setTelefono(veterinario.getTelefono());
         dto.setCorreo(veterinario.getCorreo());
         return dto;
+>>>>>>> 0429cfed3641891bf219397071c83ecf49cf9344
     }
 }

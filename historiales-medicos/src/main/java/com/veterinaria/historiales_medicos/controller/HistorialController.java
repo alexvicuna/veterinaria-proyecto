@@ -1,40 +1,60 @@
 package com.veterinaria.historiales_medicos.controller;
 
-import com.veterinaria.historiales_medicos.dto.HistorialDTO;
+import com.veterinaria.historiales_medicos.dto.HistorialRequestDTO;
+import com.veterinaria.historiales_medicos.dto.HistorialResponseDTO;
 import com.veterinaria.historiales_medicos.service.HistorialService;
-import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/historiales")
+@RequiredArgsConstructor
 public class HistorialController {
 
-    @Autowired
-    private HistorialService historialService; // <-- Conecta directo con tu Service
+    private final HistorialService historialService;
 
     @PostMapping
-    public ResponseEntity<HistorialDTO> crearHistorial(@Valid @RequestBody HistorialDTO dto) {
-        return new ResponseEntity<>(historialService.crearHistorial(dto), HttpStatus.CREATED);
-    }
-
-    @GetMapping
-    public ResponseEntity<List<HistorialDTO>> obtenerTodos() {
-        return ResponseEntity.ok(historialService.obtenerTodos());
+    public ResponseEntity<HistorialResponseDTO> crearHistorial(@RequestBody HistorialRequestDTO request) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(historialService.crearHistorial(request));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<HistorialDTO> obtenerPorId(@PathVariable Long id) {
+    public ResponseEntity<HistorialResponseDTO> obtenerPorId(@PathVariable Long id) {
         return ResponseEntity.ok(historialService.obtenerPorId(id));
     }
 
+    @GetMapping
+    public ResponseEntity<List<HistorialResponseDTO>> obtenerTodos() {
+        return ResponseEntity.ok(historialService.obtenerTodos());
+    }
+
+    @GetMapping("/mascota/{idMascota}")
+    public ResponseEntity<List<HistorialResponseDTO>> obtenerPorMascota(@PathVariable Long idMascota) {
+        return ResponseEntity.ok(historialService.obtenerPorMascota(idMascota));
+    }
+    @GetMapping("/mascota/{idMascota}/veterinario/{idVeterinario}")
+    public ResponseEntity<List<HistorialResponseDTO>> obtenerPorMascotaYVeterinario(
+            @PathVariable Long idMascota,
+            @PathVariable Long idVeterinario) {
+        return ResponseEntity.ok(historialService.obtenerPorMascotaYVeterinario(idMascota, idVeterinario));
+    }
+
+    @GetMapping("/fechas")
+    public ResponseEntity<List<HistorialResponseDTO>> obtenerPorRangoDeFechas(
+            @RequestParam LocalDate inicio,
+            @RequestParam LocalDate fin) {
+        return ResponseEntity.ok(historialService.obtenerPorRangoDeFechas(inicio, fin));
+    }
+
     @PutMapping("/{id}")
-    public ResponseEntity<HistorialDTO> actualizarHistorial(@PathVariable Long id, @Valid @RequestBody HistorialDTO dto) {
-        return ResponseEntity.ok(historialService.actualizarHistorial(id, dto));
+    public ResponseEntity<HistorialResponseDTO> actualizarHistorial(@PathVariable Long id,@RequestBody HistorialRequestDTO request) {
+        return ResponseEntity.ok(historialService.actualizarHistorial(id, request));
     }
 
     @DeleteMapping("/{id}")
