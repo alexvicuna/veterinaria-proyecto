@@ -13,7 +13,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/recetas")
+@RequestMapping("/api/v1/recetas")
 public class RecetaController {
 
     @Autowired

@@ -1,7 +1,9 @@
 package com.veterinaria.recetas.service;
 
-import com.veterinaria.recetas.dto.RecetaRequestDTO;
-import com.veterinaria.recetas.dto.RecetaResponseDTO;
+import com.veterinaria.recetas.client.CitaClient;
+import com.veterinaria.recetas.dto.*;
+import com.veterinaria.recetas.client.MascotaClient;
+import com.veterinaria.recetas.client.VeterinarioClient;
 import com.veterinaria.recetas.model.Receta;
 import com.veterinaria.recetas.recetasException.RecetaNotFoundException;
 import com.veterinaria.recetas.repository.RecetaRepository;
@@ -17,6 +19,12 @@ public class RecetaService {
 
     @Autowired
     private RecetaRepository recetaRepository;
+    @Autowired
+    private MascotaClient mascotaClient;
+    @Autowired
+    private VeterinarioClient veterinarioClient;
+    @Autowired
+    private CitaClient citaClient;
 
     public RecetaResponseDTO crearReceta(RecetaRequestDTO dto) {
         Receta receta = new Receta();
@@ -26,6 +34,7 @@ public class RecetaService {
         receta.setDosis(dto.getDosis());
         receta.setIdVeterinario(dto.getIdVeterinario());
         receta.setIdMascota(dto.getIdMascota());
+        receta.setIdCita(dto.getIdCita());
         return mappearaDTO(recetaRepository.save(receta));
     }
 
@@ -79,6 +88,7 @@ public class RecetaService {
         receta.setDosis(dto.getDosis());
         receta.setIdVeterinario(dto.getIdVeterinario());
         receta.setIdMascota(dto.getIdMascota());
+        receta.setIdCita(dto.getIdCita());
 
         return mappearaDTO(recetaRepository.save(receta));
     }
@@ -96,8 +106,16 @@ public class RecetaService {
         dto.setDiagnostico(receta.getDiagnostico());
         dto.setMedicamento(receta.getMedicamento());
         dto.setDosis(receta.getDosis());
-        dto.setIdVeterinario(receta.getIdVeterinario());
-        dto.setIdMascota(receta.getIdMascota());
+
+        MascotaDTO mascota = mascotaClient.obtenerMascota(receta.getIdMascota());
+        dto.setMascota(mascota);
+
+        VeterinarioDTO veterinario = veterinarioClient.obtenerVeterinario(receta.getIdVeterinario());
+        dto.setVeterinario(veterinario);
+
+        CitaDTO cita = citaClient.obtenerCita(receta.getIdCita());
+        dto.setCita(cita);
+
         return dto;
     }
 }

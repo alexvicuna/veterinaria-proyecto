@@ -32,4 +32,7 @@ public class RecetaRequestDTO {
 
     @NotNull(message = "El id de la mascota es obligatorio")
     private Long idMascota;
+
+    @NotNull(message = "El id de la cita es obligatorio")
+    private Long idCita;
 }

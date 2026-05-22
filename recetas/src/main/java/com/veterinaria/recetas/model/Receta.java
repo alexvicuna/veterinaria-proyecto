@@ -15,23 +15,27 @@ public class Receta {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_receta")
     private Long idReceta;
 
-    @Column(nullable = false)
+    @Column(name = "fecha_emision", nullable = false)
     private LocalDate fechaEmision;
 
-    @Column(nullable = false)
+    @Column(name = "diagnostico", nullable = false)
     private String diagnostico;
 
-    @Column(nullable = false)
+    @Column(name = "medicamento", nullable = false)
     private String medicamento;
 
-    @Column(nullable = false)
+    @Column(name = "dosis", nullable = false)
     private String dosis;
 
-    @Column(nullable = false)
+    @Column(name = "id_veterinario", nullable = false)
     private Long idVeterinario;
 
-    @Column(nullable = false)
+    @Column(name = "id_mascota", nullable = false)
     private Long idMascota;
+
+    @Column(name = "id_cita", nullable = false)
+    private Long idCita;
 }
