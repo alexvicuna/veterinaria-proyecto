@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import com.veterinaria.mascotas.dto.MascotaDTO;
 
 @RestController
 @RequestMapping("/api/v1/mascotas")
@@ -57,5 +58,10 @@ public class MascotaController {
     @GetMapping("/buscar/especie")
     public ResponseEntity<List<MascotaResponseDTO>> buscarPorEspecie(@RequestParam String especie) {
         return ResponseEntity.ok(mascotaService.buscarPorEspecie(especie));
+    }
+
+    @GetMapping("/dueno/{idDueno}")
+    public ResponseEntity<List<MascotaDTO>> obtenerPorDueno(@PathVariable Long idDueno) {
+        return ResponseEntity.ok(mascotaService.buscarPorDueno(idDueno));
     }
 }

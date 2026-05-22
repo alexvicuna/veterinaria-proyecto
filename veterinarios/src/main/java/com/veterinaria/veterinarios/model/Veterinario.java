@@ -16,11 +16,12 @@ public class Veterinario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_veterinario")
     private Long idVeterinario;
+    private String rutVet;
 
     @Column(name = "nombre_vet", nullable = false)
     private String nombreVet;
-
+    private String apellidoVet;
     private String especialidad;
-
     private String telefono;
+    private String correo;
 }

@@ -10,7 +10,7 @@ import com.veterinaria.mascotas.dto.MascotaRequestDTO;
 import com.veterinaria.mascotas.model.Mascota;
 import com.veterinaria.mascotas.repository.MascotaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import com.veterinaria.mascotas.dto.MascotaDTO;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,7 +18,9 @@ import java.util.stream.Collectors;
 @Service
 public class MascotaService {
 
+    @Autowired
     private MascotaRepository mascotaRepository;
+    @Autowired
     private DuenoClient duenoClient;
 
     private MascotaResponseDTO toResponseDTO(Mascota mascota) {
@@ -99,4 +101,22 @@ public class MascotaService {
                 .map(this::toResponseDTO)
                 .collect(Collectors.toList());
     }
+
+    public List<MascotaDTO> buscarPorDueno(Long idDueno) {
+        return mascotaRepository.findByIdDueno(idDueno)
+                .stream()
+                .map(this::toMascotaDTO) // ← mapper simple sin llamar a dueños
+                .collect(Collectors.toList());
+    }
+
+    private MascotaDTO toMascotaDTO(Mascota mascota) {
+        MascotaDTO dto = new MascotaDTO();
+        dto.setIdMascota(mascota.getIdMascota());
+        dto.setNombreMasc(mascota.getNombreMasc());
+        dto.setEspecie(mascota.getEspecie());
+        dto.setRaza(mascota.getRaza());
+        dto.setEdad(mascota.getEdad());
+        return dto;
+    }
+
 }
