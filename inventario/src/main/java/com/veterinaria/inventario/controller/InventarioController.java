@@ -1,9 +1,5 @@
 package com.veterinaria.inventario.controller;
 
-<<<<<<< HEAD
-public class InventarioController {
-}
-=======
 import com.veterinaria.inventario.dto.InventarioRequestDTO;
 import com.veterinaria.inventario.dto.InventarioResponseDTO;
 import com.veterinaria.inventario.service.InventarioService;
@@ -63,4 +59,4 @@ public class InventarioController {
         return ResponseEntity.noContent().build();
     }
 }
->>>>>>> 0429cfed3641891bf219397071c83ecf49cf9344
+

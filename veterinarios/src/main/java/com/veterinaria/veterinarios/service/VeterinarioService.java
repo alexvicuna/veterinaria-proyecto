@@ -3,9 +3,7 @@ package com.veterinaria.veterinarios.service; // <-- Tu paquete oficial con 's'
 <<<<<<< HEAD
 
 import com.veterinaria.veterinarios.dto.VeterinarioRequestDTO;
-import com.veterinaria.veterinarios.dto.VeterioRenponseDTO;
 =======
-import com.veterinaria.veterinarios.dto.VeterinarioRequestDTO;
 import com.veterinaria.veterinarios.dto.VeterinarioResponseDTO;
 >>>>>>> 0429cfed3641891bf219397071c83ecf49cf9344
 import com.veterinaria.veterinarios.model.Veterinario;
@@ -23,7 +21,7 @@ public class VeterinarioService {
 
 <<<<<<< HEAD
 
-    public VeterioRenponseDTO guardarVeterinario(VeterinarioRequestDTO requestDto) {
+    public VeterinarioRenponseDTO guardarVeterinario(VeterinarioRequestDTO requestDto) {
 
         Veterinario veterinario = new Veterinario();
         veterinario.setNombreVet(requestDto.getNombreVet());
@@ -36,7 +34,7 @@ public class VeterinarioService {
     }
 
 
-    public List<VeterioRenponseDTO> obtenerTodos() {
+    public List<VeterinarioRenponseDTO> obtenerTodos() {
 
         return veterinarioRepository.findAll().stream()
                 .map(this::mapToResponseDTO)
@@ -44,8 +42,8 @@ public class VeterinarioService {
     }
 
 
-    private VeterioRenponseDTO mapToResponseDTO(Veterinario v) {
-        VeterioRenponseDTO responseDto = new VeterioRenponseDTO();
+    private VeterinarioRenponseDTO mapToResponseDTO(Veterinario v) {
+        VeterinarioRenponseDTO responseDto = new VeterinarioRenponseDTO();
         responseDto.setIdVeterinario(v.getIdVeterinario());
         responseDto.setNombreVet(v.getNombreVet());
         responseDto.setEspecialidad(v.getEspecialidad());

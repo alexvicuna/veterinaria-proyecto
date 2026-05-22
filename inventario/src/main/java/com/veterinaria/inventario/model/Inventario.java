@@ -1,9 +1,4 @@
 package com.veterinaria.inventario.model;
-
-<<<<<<< HEAD
-public class Inventario {
-}
-=======
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,4 +25,4 @@ public class Inventario {
     @Column(nullable = false)
     private Integer cantidadDisponible;
 }
->>>>>>> 0429cfed3641891bf219397071c83ecf49cf9344
+
