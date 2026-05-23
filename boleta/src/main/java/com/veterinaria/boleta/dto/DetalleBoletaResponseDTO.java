@@ -1,18 +1,15 @@
 package com.veterinaria.boleta.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
-@Builder
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class DetalleBoletaResponseDTO {
 
     private Long idDetalle;
+    private String descripcion;
     private Integer cantidad;
     private Double subtotal;
-    private Long idBoleta;
 }
