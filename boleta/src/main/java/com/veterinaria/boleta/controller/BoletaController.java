@@ -32,7 +32,7 @@ public class BoletaController {
 
     @PostMapping
     public ResponseEntity<BoletaResponseDTO> crear(@Valid @RequestBody BoletaRequestDTO dto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(boletaService.crear(dto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(boletaService.crearBoleta(dto));
     }
 
     @PutMapping("/{id}")
@@ -44,7 +44,7 @@ public class BoletaController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
-        boletaService.eliminar(id);
+        boletaService.eliminarBoleta(id);
         return ResponseEntity.noContent().build();
     }
 
