@@ -1,6 +1,7 @@
 package com.veterinaria.pagos.dto;
 
-import com.veterinaria.pagos.model.EstadoPago;
+import com.veterinaria.pagos.model.DetallePago;
+import com.veterinaria.pagos.model.MetodoPago;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,6 +19,7 @@ public class PagoResponseDTO {
     private Long idPago;
     private BigDecimal monto;
     private LocalDateTime fechaPago;
-    private EstadoPago.MetodoPago metodoPago;
-    private EstadoPago.DetallePago estadoPago;
+    private MetodoPago metodoPago;
+    private DetallePago estadoPago;
+    private CitaDTO cita;
 }

@@ -1,14 +1,18 @@
 package com.veterinaria.pagos.dto;
 
 import com.veterinaria.pagos.model.EstadoPago;
+import com.veterinaria.pagos.model.MetodoPago;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class PagoRequestDTO {
 
     @NotNull(message = "El monto es obligatorio")
@@ -19,8 +23,8 @@ public class PagoRequestDTO {
     private LocalDateTime fechaPago;
 
     @NotNull(message = "El método de pago es obligatorio")
-    private EstadoPago.MetodoPago metodoPago;
+    private MetodoPago metodoPago;
 
-    @NotNull(message = "El estado de pago es obligatorio")
-    private EstadoPago.DetallePago estadoPago;
+    @NotNull(message = "El id de la cita es obligatorio")
+    private Long idCita;
 }
