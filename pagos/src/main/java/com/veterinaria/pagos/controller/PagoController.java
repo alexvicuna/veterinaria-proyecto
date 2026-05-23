@@ -1,11 +1,13 @@
 package com.veterinaria.pagos.controller;
 
+import com.veterinaria.pagos.dto.ActualizarEstadoPagoDTO;
 import com.veterinaria.pagos.dto.PagoRequestDTO;
 import com.veterinaria.pagos.dto.PagoResponseDTO;
-import com.veterinaria.pagos.model.EstadoPago;
+import com.veterinaria.pagos.model.DetallePago;
+import com.veterinaria.pagos.model.MetodoPago;
 import com.veterinaria.pagos.service.PagoService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +18,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/pagos")
-@RequiredArgsConstructor
 public class PagoController {
 
-    private final PagoService pagoService;
+    @Autowired
+    private PagoService pagoService;
 
     @GetMapping
     public ResponseEntity<List<PagoResponseDTO>> listarTodos() {
@@ -32,30 +34,36 @@ public class PagoController {
     }
 
     @PostMapping
-    public ResponseEntity<PagoResponseDTO> crear(@Valid @RequestBody PagoRequestDTO dto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(pagoService.crear(dto));
+    public ResponseEntity<PagoResponseDTO> registrarPago(@Valid @RequestBody PagoRequestDTO dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(pagoService.registrarPago(dto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PagoResponseDTO> actualizar(
+    public ResponseEntity<PagoResponseDTO> actualizarPago(@PathVariable Long id,
+                                                          @Valid @RequestBody PagoRequestDTO dto) {
+        return ResponseEntity.ok(pagoService.actualizarPago(id, dto));
+    }
+
+    @PatchMapping("/{id}/estado")
+    public ResponseEntity<PagoResponseDTO> actualizarEstado(
             @PathVariable Long id,
-            @Valid @RequestBody PagoRequestDTO dto) {
-        return ResponseEntity.ok(pagoService.actualizar(id, dto));
+            @Valid @RequestBody ActualizarEstadoPagoDTO dto) {
+        return ResponseEntity.ok(pagoService.actualizarEstado(id, dto.getDetallePago()));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
-        pagoService.eliminar(id);
+    public ResponseEntity<Void> eliminarPago(@PathVariable Long id) {
+        pagoService.eliminarPago(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/estado/{estado}")
-    public ResponseEntity<List<PagoResponseDTO>> listarPorEstado(@PathVariable EstadoPago.DetallePago estado) {
+    public ResponseEntity<List<PagoResponseDTO>> listarPorEstado(@PathVariable DetallePago estado) {
         return ResponseEntity.ok(pagoService.listarPorEstado(estado));
     }
 
     @GetMapping("/metodo/{metodo}")
-    public ResponseEntity<List<PagoResponseDTO>> listarPorMetodoPago(@PathVariable EstadoPago.MetodoPago metodo) {
+    public ResponseEntity<List<PagoResponseDTO>> listarPorMetodoPago(@PathVariable MetodoPago metodo) {
         return ResponseEntity.ok(pagoService.listarPorMetodoPago(metodo));
     }
 

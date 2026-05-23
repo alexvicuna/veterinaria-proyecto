@@ -4,14 +4,15 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "pagos")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class Pago {
 
     @Id
@@ -27,9 +28,12 @@ public class Pago {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "metodo_pago", nullable = false)
-    private EstadoPago.MetodoPago metodoPago;
+    private MetodoPago metodoPago;;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "estado_pago", nullable = false)
-    private EstadoPago.DetallePago estadoPago;
+    private DetallePago estadoPago;
+
+    @Column(name = "id_cita", nullable = false)
+    private Long idCita;
 }
