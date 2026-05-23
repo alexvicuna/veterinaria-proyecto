@@ -1,8 +1,0 @@
-CREATE TABLE IF NOT EXISTS dueno (
-    id_dueno BIGINT AUTO_INCREMENT PRIMARY KEY,
-    rut VARCHAR(12) NOT NULL,
-    nombre VARCHAR(100) NOT NULL,
-    apellido VARCHAR(100) NOT NULL,
-    telefono VARCHAR(20) NOT NULL,
-    correo VARCHAR(100) NOT NULL
-    );
