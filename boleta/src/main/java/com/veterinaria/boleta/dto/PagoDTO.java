@@ -8,7 +8,7 @@ import java.time.LocalDate;
 @Setter
 public class PagoDTO {
     private Long idPago;
-    private Double monto;
+    private BigDecimal monto;
     private LocalDate fechaPago;
     private String metodoPago;
     private String estadoPago;
