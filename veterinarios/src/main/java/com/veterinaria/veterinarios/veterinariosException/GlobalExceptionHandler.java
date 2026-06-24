@@ -13,7 +13,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(VeterinariosNotFoundException.class)
     public ResponseEntity<Map<String, String>> manejarDuenoNotFound(VeterinariosNotFoundException ex) {
         Map<String, String> respuesta = new HashMap<>();
-        respuesta.put("error", ex.getMessage())
+        respuesBolet("error", ex.getMessage())
         return new ResponseEntity<>(respuesta, HttpStatus.NOT_FOUND);
     }
 
