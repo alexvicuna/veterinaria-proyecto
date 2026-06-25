@@ -3,6 +3,7 @@ package com.veterinaria.inventario.service;
 import com.veterinaria.inventario.dto.InventarioRequestDTO;
 import com.veterinaria.inventario.dto.InventarioResponseDTO;
 
+import com.veterinaria.inventario.inventarioException.InventarioNotFoundException;
 import com.veterinaria.inventario.model.Inventario;
 import com.veterinaria.inventario.repository.InventarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
