@@ -1,6 +1,6 @@
 package com.veterinaria.pagos.dto;
 
-import com.veterinaria.pagos.model.EstadoPago;
+
 import com.veterinaria.pagos.model.MetodoPago;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
