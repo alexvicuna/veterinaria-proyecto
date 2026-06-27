@@ -209,7 +209,7 @@ class DuenoServiceTest {
         when(mascotaClient.obtenerMascotasPorDueno(1L)).thenReturn(List.of(mascota));
 
         DuenoResponseDTO resultado = duenoService.obtenerPorId(1L);
-        
+
         assertNotNull(resultado.getMascotas());
         assertEquals(1, resultado.getMascotas().size());
         verify(mascotaClient, times(1)).obtenerMascotasPorDueno(1L);
