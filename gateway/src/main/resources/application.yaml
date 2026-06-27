@@ -1,0 +1,88 @@
+server:
+  port: 9090
+
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      routes:
+
+        - id: mascotas-service
+          uri: http://localhost:8082
+          predicates:
+            - Path=/api/v1/mascotas/**
+          filters:
+            - StripPrefix=0
+
+        - id: citas-service
+          uri: http://localhost:8085
+          predicates:
+            - Path=/api/v1/citas/**
+          filters:
+            - StripPrefix=0
+
+        - id: inventario-service
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/v1/inventario/**
+          filters:
+            - StripPrefix=0
+
+        - id: recetas-service
+          uri: http://localhost:8084
+          predicates:
+            - Path=/api/v1/recetas/**
+          filters:
+            - StripPrefix=0
+
+        - id: usuarios-service
+          uri: http://localhost:8090
+          predicates:
+            - Path=/api/v1/usuarios/**
+          filters:
+            - StripPrefix=0
+
+        - id: veterinarios-service
+          uri: http://localhost:8087
+          predicates:
+            - Path=/api/v1/veterinarios/**
+          filters:
+            - StripPrefix=0
+
+        - id: duenos-service
+          uri: http://localhost:8080
+          predicates:
+            - Path=/api/v1/duenos/**
+          filters:
+            - StripPrefix=0
+
+        - id: historiales-service
+          uri: http://localhost:8086
+          predicates:
+            - Path=/api/v1/historiales/**
+          filters:
+            - StripPrefix=0
+
+        - id: pagos-service
+          uri: http://localhost:8088
+          predicates:
+            - Path=/api/v1/pagos/**
+          filters:
+            - StripPrefix=0
+
+
+        - id: boleta-service
+          uri: http://localhost:8089
+          predicates:
+            - Path=/api/v1/boletas/**
+          filters:
+            - StripPrefix=0
+
+eureka:
+  client:
+    enabled: false
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
