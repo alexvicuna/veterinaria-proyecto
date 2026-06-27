@@ -1,0 +1,219 @@
+version: '3.8'
+
+services:
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ""
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - veterinaria-net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  duenos:
+    build: ./duenos
+    container_name: duenos
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/db_veterinaria_duenos?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ""
+      SERVICIOS_MASCOTAS_URL: http://mascotas:8082
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - veterinaria-net
+
+  mascotas:
+    build: ./mascotas
+    container_name: mascotas
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/db_veterinaria_mascotas?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ""
+      SERVICIOS_DUENOS_URL: http://duenos:8080
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - veterinaria-net
+
+  veterinarios:
+    build: ./veterinarios
+    container_name: veterinarios
+    ports:
+      - "8087:8087"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/db_veterinaria_veterinarios?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ""
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - veterinaria-net
+
+  historiales-medicos:
+    build: ./historiales-medicos
+    container_name: historiales-medicos
+    ports:
+      - "8086:8086"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/db_veterinaria_historial?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ""
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - veterinaria-net
+
+  citas:
+    build: ./citas
+    container_name: citas
+    ports:
+      - "8085:8085"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/db_veterinaria_citas?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ""
+      SERVICIOS_DUENOS_URL: http://duenos:8080
+      SERVICIOS_MASCOTAS_URL: http://mascotas:8082
+      SERVICIOS_VETERINARIOS_URL: http://veterinarios:8087
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - veterinaria-net
+
+  recetas:
+    build: ./recetas
+    container_name: recetas
+    ports:
+      - "8084:8084"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/db_veterinaria_recetas?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ""
+      SERVICIOS_CITAS_URL: http://citas:8085
+      SERVICIOS_MASCOTAS_URL: http://mascotas:8082
+      SERVICIOS_VETERINARIOS_URL: http://veterinarios:8087
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - veterinaria-net
+
+  inventario:
+    build: ./inventario
+    container_name: inventario
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/db_veterinaria_inventario?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ""
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - veterinaria-net
+
+  pagos:
+    build: ./pagos
+    container_name: pagos
+    ports:
+      - "8088:8088"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/db_veterinaria_pagos?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ""
+      SERVICIOS_CITAS_URL: http://citas:8085
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - veterinaria-net
+
+  boleta:
+    build: ./boleta
+    container_name: boleta
+    ports:
+      - "8089:8089"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/db_veterinaria_boletas?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ""
+      SERVICIOS_CITAS_URL: http://citas:8085
+      SERVICIOS_PAGOS_URL: http://pagos:8088
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - veterinaria-net
+
+  usuarios:
+    build: ./usuarios
+    container_name: usuarios
+    ports:
+      - "8090:8090"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/db_veterinaria_usuarios?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ""
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - veterinaria-net
+
+  gateway:
+    build: ./gateway
+    container_name: gateway
+    ports:
+      - "9090:9090"
+    environment:
+      SPRING_CLOUD_GATEWAY_ROUTES_0_URI: http://mascotas:8082
+      SPRING_CLOUD_GATEWAY_ROUTES_1_URI: http://citas:8085
+      SPRING_CLOUD_GATEWAY_ROUTES_2_URI: http://inventario:8081
+      SPRING_CLOUD_GATEWAY_ROUTES_3_URI: http://recetas:8084
+      SPRING_CLOUD_GATEWAY_ROUTES_4_URI: http://usuarios:8090
+      SPRING_CLOUD_GATEWAY_ROUTES_5_URI: http://veterinarios:8087
+      SPRING_CLOUD_GATEWAY_ROUTES_6_URI: http://duenos:8080
+      SPRING_CLOUD_GATEWAY_ROUTES_7_URI: http://historiales-medicos:8086
+      SPRING_CLOUD_GATEWAY_ROUTES_8_URI: http://pagos:8088
+      SPRING_CLOUD_GATEWAY_ROUTES_9_URI: http://boleta:8089
+    depends_on:
+      - duenos
+      - mascotas
+      - veterinarios
+      - historiales-medicos
+      - citas
+      - recetas
+      - inventario
+      - pagos
+      - boleta
+      - usuarios
+    networks:
+      - veterinaria-net
+
+networks:
+  veterinaria-net:
+    driver: bridge
+
+volumes:
+  mysql_data:
