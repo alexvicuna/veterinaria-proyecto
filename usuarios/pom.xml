@@ -80,7 +80,32 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-validation-test</artifactId>
+			<artifactId>spring-boot-starter-valid	</path>
+		</annotationProcessorPaths>
+	</configuration>
+</execution>
+<execution>
+<id>default-testCompile</id>
+<phase>test-compile</phase>
+<goals>
+	<goal>testCompile</goal>
+</goals>
+<configuration>
+	<annotationProcessorPaths>
+		<path>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</path>
+	</annotationProcessorPaths>
+</configuration>
+</execution>
+		</executions>
+		</plugin>
+		</plugins>
+		</build>
+
+		</project>
+		ation-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -130,28 +155,4 @@
 								<path>
 									<groupId>org.projectlombok</groupId>
 									<artifactId>lombok</artifactId>
-								</path>
-							</annotationProcessorPaths>
-						</configuration>
-					</execution>
-					<execution>
-						<id>default-testCompile</id>
-						<phase>test-compile</phase>
-						<goals>
-							<goal>testCompile</goal>
-						</goals>
-						<configuration>
-							<annotationProcessorPaths>
-								<path>
-									<groupId>org.projectlombok</groupId>
-									<artifactId>lombok</artifactId>
-								</path>
-							</annotationProcessorPaths>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
-
-</project>
+							
