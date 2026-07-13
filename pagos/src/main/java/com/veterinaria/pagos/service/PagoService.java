@@ -10,6 +10,8 @@ import com.veterinaria.pagos.model.Pago;
 import com.veterinaria.pagos.repository.PagoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,6 +19,12 @@ import java.util.stream.Collectors;
 
 @Service
 public class PagoService {
+
+    @Autowired
+    private PagoRepository pagoRepository;
+    @Autowired
+    private CitaClient citaClient;
+    private static final Logger log = LoggerFactory.getLogger(PagoService.class);
 
     @Autowired
     private PagoRepository pagoRepository;
