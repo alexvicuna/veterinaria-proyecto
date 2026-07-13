@@ -1,9 +1,9 @@
 spring:
   application:
-    name: inventario
+    name: servicio-citas
 
   datasource:
-    url: jdbc:mysql://localhost:3306/db_veterinaria_inventario?createDatabaseIfNotExist=true&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/db_veterinaria_citas?createDatabaseIfNotExist=true&serverTimezone=UTC
     username: root
     password:
 
@@ -19,7 +19,15 @@ spring:
     enabled: false
 
 server:
-  port: 8081
+  port: 8085
+
+servicios:
+  mascotas:
+    url: http://localhost:8082
+  duenos:
+    url: http://localhost:8080
+  veterinarios:
+    url: http://localhost:8087
 
 eureka:
   client:
