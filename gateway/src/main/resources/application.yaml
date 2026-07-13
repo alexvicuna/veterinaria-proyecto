@@ -71,7 +71,6 @@ spring:
           filters:
             - StripPrefix=0
 
-
         - id: boleta-service
           uri: http://localhost:8089
           predicates:
@@ -86,3 +85,27 @@ eureka:
 logging:
   level:
     org.springframework.cloud.gateway: DEBUG
+
+springdoc:
+  swagger-ui:
+    urls:
+      - name: inventario
+        url: /api/v1/inventario/api-docs
+      - name: mascotas
+        url: /api/v1/mascotas/api-docs
+      - name: citas
+        url: /api/v1/citas/api-docs
+      - name: recetas
+        url: /api/v1/recetas/api-docs
+      - name: usuarios
+        url: /api/v1/usuarios/api-docs
+      - name: veterinarios
+        url: /api/v1/veterinarios/api-docs
+      - name: duenos
+        url: /api/v1/duenos/api-docs
+      - name: historiales
+        url: /api/v1/historiales/api-docs
+      - name: pagos
+        url: /api/v1/pagos/api-docs
+      - name: boletas
+        url: /api/v1/boletas/api-docs
